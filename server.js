@@ -3,6 +3,7 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import cors from "cors";
 
+const port = process.env.PORT || 4000;
 
 const app = express();
 app.use(cors());
