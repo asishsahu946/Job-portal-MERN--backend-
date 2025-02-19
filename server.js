@@ -5,8 +5,8 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 const client = new MongoClient(
-  'mongodb+srv://asishsahu946:asishsahu7085@personalproject.l7iga.mongodb.net/'
-);
+  'mongodb+srv://asishsahu946:asishsahu7085@personalproject.l7iga.mongodb.net/?retryWrites=true&w=majority&tls=true&ssl=true'
+)
 await client.connect();
 
 const db = client.db("jobApp");
