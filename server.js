@@ -1,10 +1,14 @@
+import "dotenv/config";
 import express from "express";
 import { MongoClient } from "mongodb";
 import cors from "cors";
 
+
 const app = express();
 app.use(cors());
-const client = new MongoClient("mongodb://127.0.0.1:27017");
+const client = new MongoClient(
+  process.env.MONGODB_URL
+);
 await client.connect();
 
 const db = client.db("jobApp");
@@ -24,6 +28,6 @@ app.post("/jobs", async (req, res) => {
   res.json({ message: "Job successfully Posted", data: req.body });
 });
 
-app.listen(4000, () => {
-  console.log("Server Started on port 4000");
+app.listen(5000, () => {
+  console.log("Server Started on port 5000");
 });
