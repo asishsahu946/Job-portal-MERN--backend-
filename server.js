@@ -29,6 +29,6 @@ app.post("/jobs", async (req, res) => {
   res.json({ message: "Job successfully Posted", data: req.body });
 });
 
-app.listen(5000, () => {
+app.listen(port, () => {
   console.log("Server Started on port 5000");
 });
