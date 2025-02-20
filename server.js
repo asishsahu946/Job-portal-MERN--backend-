@@ -5,13 +5,13 @@ import cors from "cors";
 const app = express();
 app.use(cors()); //Allows all origins
 const client = new MongoClient(
-  'mongodb+srv://asishsahu946:K7J0uvpT3fAgpiJ2@personalproject.l7iga.mongodb.net/'
+  "mongodb+srv://asishsahu946:K7J0uvpT3fAgpiJ2@personalproject.l7iga.mongodb.net/"
 );
 await client.connect();
 
 const db = client.db("jobApp");
 const collection = db.collection("jobs");
-const jobsData = await collection.find().toArray();
+const jobsData = await collection.find().sort({ createdAt: -1 }).toArray();
 
 app.get("/getjobs", (req, res) => {
   res.send(jobsData);
@@ -19,8 +19,6 @@ app.get("/getjobs", (req, res) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
 
 app.post("/postjobs", async (req, res) => {
   console.log(req.body);
