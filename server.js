@@ -11,7 +11,7 @@ await client.connect();
 
 const db = client.db("jobApp");
 const collection = db.collection("jobs");
-const jobsData = await collection.find().toArray();
+const jobsData = await collection.find().sort({_id: -1}).toArray();
 
 app.get("/getjobs", (req, res) => {
   res.send(jobsData);
