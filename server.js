@@ -14,7 +14,7 @@ const collection = db.collection("jobs");
 const jobsData = await collection.find().toArray();
 
 app.get("/getjobs", (req, res) => {
-  res.send(jobsData.sort({ createdAt: -1 }));
+  res.send(jobsData);
 });
 
 app.use(express.json());
