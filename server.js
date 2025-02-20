@@ -11,10 +11,10 @@ await client.connect();
 
 const db = client.db("jobApp");
 const collection = db.collection("jobs");
-const jobsData = await collection.find().sort({ createdAt: -1 }).toArray();
+const jobsData = await collection.find().toArray();
 
 app.get("/getjobs", (req, res) => {
-  res.send(jobsData);
+  res.send(jobsData.sort({ createdAt: -1 }));
 });
 
 app.use(express.json());
