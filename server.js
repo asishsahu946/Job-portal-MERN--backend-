@@ -13,6 +13,10 @@ const db = client.db("jobApp");
 const collection = db.collection("jobs");
 const jobsData = await collection.find().sort({_id: -1}).toArray();
 
+app.get("/", (req, res) => {
+  res.status(200).send("Server is running");
+})
+
 app.get("/getjobs", (req, res) => {
   res.status(200).send(jobsData);
 });
