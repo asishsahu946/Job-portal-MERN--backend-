@@ -14,7 +14,7 @@ const collection = db.collection("jobs");
 const jobsData = await collection.find().sort({_id: -1}).toArray();
 
 app.get("/getjobs", (req, res) => {
-  res.send(jobsData);
+  res.status(200).send(jobsData);
 });
 
 app.use(express.json());
@@ -27,5 +27,5 @@ app.post("/postjobs", async (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log("Server Started on port 5000");
+  console.log("Server Started on port 4000");
 });
