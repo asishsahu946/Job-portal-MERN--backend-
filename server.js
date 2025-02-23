@@ -44,6 +44,21 @@ app.post("/postjobs", async (req, res) => {
   }
 });
 
+app.post("/filterjobs", async (req, res) => {
+  const filterData = await db.collection("jobs").find({
+    jobTitle: req.body.jobTitle,
+    // formmattedAddress: req.body.location,
+    // category: req.body.category,
+    // jobType: req.body.jobType,
+    // experience: req.body.experienceLevel,
+    // // _id: req.body.datePosted // this is the date posted problem
+    // salary: req.body.salary
+  }).sort({ _id: -1 }).toArray();
+  res.status(200).json(filterData);
+  return filterData
+})
+
+
 app.listen(5000, () => {
   console.log("Server Started on port 5000");
 });
