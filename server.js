@@ -1,5 +1,5 @@
 import express from "express";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import cors from "cors";
 
 const app = express();
@@ -28,14 +28,19 @@ app.get("/getjobs", async (req, res) => {
   }
 });
 
-await db.command({collMod: "jobs",
+app.get("/getjobs/:id", async (req, res) => {
+  const jobDetails = await collection.findOne({ _id: new ObjectId(req.params.id) });
+  res.status(200).json(jobDetails);
+});
+
+await db.command({
+  collMod: "jobs",
   validator: {},
   validationLevel: "strict",
   validationAction: "error",
-})
+});
 
 app.post("/postjobs", async (req, res) => {
-
   try {
     await collection.insertOne(req.body);
     res.json({ message: "Job Data inserted successfully" });
@@ -45,20 +50,58 @@ app.post("/postjobs", async (req, res) => {
 });
 
 app.post("/filterjobs", async (req, res) => {
-  const filterData = await db.collection("jobs").find({
-    jobTitle: req.body.jobTitle,
-    // formmattedAddress: req.body.location,
-    // category: req.body.category,
-    // jobType: req.body.jobType,
-    // experience: req.body.experienceLevel,
-    // // _id: req.body.datePosted // this is the date posted problem
-    // salary: req.body.salary
-  }).sort({ _id: -1 }).toArray();
+  const filterData = await db
+    .collection("jobs")
+    .find({
+      jobTitle: req.body.jobTitle,
+      // formmattedAddress: req.body.location,
+      // category: req.body.category,
+      // jobType: req.body.jobType,
+      // experience: req.body.experienceLevel,
+      // // _id: req.body.datePosted // this is the date posted problem
+      // salary: req.body.salary
+    })
+    .sort({ _id: -1 })
+    .toArray();
   res.status(200).json(filterData);
-  return filterData
-})
+  return filterData;
+});
 
+async function fetchData(page = 1, limit = 10) {
+  try {
+    const skip = (page - 1) * limit;
+    const data = await collection
+      .find()
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+    console.log(data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    await client.close();
+  }
+}
 
-app.listen(5000, () => {
-  console.log("Server Started on port 5000");
+app.get("/jobs", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const jobs = await collection.find().skip(skip).limit(limit).toArray();
+    const totalJobs = await collection.countDocuments();
+    const totalPages = Math.ceil(totalJobs / limit);
+
+    res.json({ jobs, totalPages });
+  } catch (err) {
+    res.status(500).json({ error: "Server error", message: err.message });
+  } finally {
+    await client.close();
+  }
+});
+
+app.listen(4000, () => {
+  console.log("Server Started on port 4000");
 });
