@@ -15,10 +15,12 @@ await client.connect();
 const db = client.db("jobApp");
 const collection = db.collection("jobs");
 
+
 app.get("/", (req, res) => {
   res.status(200).send("Server is running");
 });
 
+// Read jobs
 app.get("/getjobs", async (req, res) => {
   try {
     const jobsData = await collection.find().sort({ _id: -1 }).toArray();
@@ -33,6 +35,7 @@ app.get("/getjobs/:id", async (req, res) => {
   res.status(200).json(jobDetails);
 });
 
+// Validation
 await db.command({
   collMod: "jobs",
   validator: {},
@@ -40,6 +43,7 @@ await db.command({
   validationAction: "error",
 });
 
+// Create job
 app.post("/postjobs", async (req, res) => {
   try {
     await collection.insertOne(req.body);
@@ -49,6 +53,7 @@ app.post("/postjobs", async (req, res) => {
   }
 });
 
+// Filter job
 app.post("/filterjobs", async (req, res) => {
   const filterData = await db
     .collection("jobs")
@@ -67,40 +72,13 @@ app.post("/filterjobs", async (req, res) => {
   return filterData;
 });
 
-async function fetchData(page = 1, limit = 10) {
-  try {
-    const skip = (page - 1) * limit;
-    const data = await collection
-      .find()
-      .sort({ _id: -1 })
-      .skip(skip)
-      .limit(limit)
-      .toArray();
-    console.log(data);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  } finally {
-    await client.close();
-  }
-}
+// Delete job
+app.delete("/deletejobs", async (req, res) => {
 
-app.get("/jobs", async (req, res) => {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = 10;
-    const skip = (page - 1) * limit;
+})
 
-    const jobs = await collection.find().skip(skip).limit(limit).toArray();
-    const totalJobs = await collection.countDocuments();
-    const totalPages = Math.ceil(totalJobs / limit);
+// Update job
 
-    res.json({ jobs, totalPages });
-  } catch (err) {
-    res.status(500).json({ error: "Server error", message: err.message });
-  } finally {
-    await client.close();
-  }
-});
 
 app.listen(4000, () => {
   console.log("Server Started on port 4000");
