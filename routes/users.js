@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 const router = express.Router();
-const client = new MongoClient("mongodb://127.0.0.1:27017/");
+const client = new MongoClient("mongodb+srv://asishsahu946:K7J0uvpT3fAgpiJ2@personalproject.l7iga.mongodb.net/");
 await client.connect();
 console.log("Connected to MongoDB");
 
