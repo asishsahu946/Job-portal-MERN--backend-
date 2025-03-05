@@ -3,7 +3,8 @@ import { MongoClient } from "mongodb";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from "dotenv";
-con
+
+dotenv.config();
 
 const router = express.Router();
 const client = new MongoClient(process.env.MONGO_URI);
