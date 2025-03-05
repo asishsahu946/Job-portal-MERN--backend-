@@ -1,8 +1,11 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import { ObjectId } from "mongodb";
+import dotenv from "dotenv";
 
-const client = new MongoClient("mongodb+srv://asishsahu946:K7J0uvpT3fAgpiJ2@personalproject.l7iga.mongodb.net/");
+dotenv.config();
+
+const client = new MongoClient(process.env.MONGO_URI);
 
 const router = express.Router();
 await client.connect();

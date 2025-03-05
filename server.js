@@ -2,6 +2,10 @@ import express from "express";
 import cors from "cors";
 import jobs from './routes/jobs.js'
 import users from './routes/users.js'
+import dotenv from 'dotenv';
+dotenv.config();
+
+const port = process.env.PORT || 4000;
 
 const app = express();
 app.use(cors()); // Allows all origins
@@ -18,6 +22,6 @@ app.use("/users", users)
 
 
 
-app.listen(4000, () => {
+app.listen(port, () => {
   console.log("Server Started on port 4000");
 });
