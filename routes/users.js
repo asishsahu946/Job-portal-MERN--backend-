@@ -4,8 +4,6 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from "dotenv";
 
-dotenv.config();
-
 const router = express.Router();
 const client = new MongoClient(process.env.MONGO_URI);
 await client.connect();
@@ -14,7 +12,7 @@ console.log("Connected to MongoDB");
 const db = client.db("jobApp");
 const collection = db.collection("users");
 
-const JWT_SECRET = process.env.JWT_SECRET; // Use environment variables in production
+const JWT_SECRET = 'your_jwt_secret'; // Use environment variables in production
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
