@@ -12,7 +12,7 @@ console.log("Connected to MongoDB");
 const db = client.db("jobApp");
 const collection = db.collection("users");
 
-const JWT_SECRET = 'your_jwt_secret'; // Use environment variables in production
+const JWT_SECRET = process.env.JWT_SECRET; // Use environment variables in production
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
